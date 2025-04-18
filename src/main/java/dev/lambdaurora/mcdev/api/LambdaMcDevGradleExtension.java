@@ -33,5 +33,7 @@ public interface LambdaMcDevGradleExtension {
 
 	void manifests(@NotNull Action<ModManifests> action);
 
+	void setupJarJarCompat();
+
 	@NotNull Dependency layered(@NotNull Action<LambdaLayeredMappingsSpecBuilder> action);
 }

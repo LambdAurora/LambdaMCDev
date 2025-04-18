@@ -15,8 +15,11 @@ import dev.lambdaurora.mcdev.api.manifest.Nmt;
 import dev.lambdaurora.mcdev.api.mappings.LambdaLayeredMappingsSpecBuilder;
 import dev.lambdaurora.mcdev.mappings.LambdaLayeredMappingsSpecBuilderImpl;
 import dev.lambdaurora.mcdev.task.GenerateFmjTask;
+import dev.lambdaurora.mcdev.task.GenerateNeoForgeJiJDataTask;
 import dev.lambdaurora.mcdev.task.GenerateNmtTask;
 import net.fabricmc.loom.api.LoomGradleExtensionAPI;
+import net.fabricmc.loom.build.nesting.NestableJarGenerationTask;
+import net.fabricmc.loom.util.Constants;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Dependency;
@@ -24,9 +27,11 @@ import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.TaskProvider;
+import org.gradle.language.jvm.tasks.ProcessResources;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.nio.file.Path;
 
 public class LambdaMcDevGradleExtensionImpl implements LambdaMcDevGradleExtension {
 	private final Project project;
@@ -71,6 +76,31 @@ public class LambdaMcDevGradleExtensionImpl implements LambdaMcDevGradleExtensio
 	@Override
 	public void manifests(@NotNull Action<ModManifests> action) {
 		action.execute(this.manifests);
+	}
+
+	@Override
+	public void setupJarJarCompat() {
+		var includeConfig = this.project.getConfigurations().getByName("includeInternal");
+
+		var generateJarJarMetadata = this.project.getTasks()
+				.register("generateJarJarMetadata", GenerateNeoForgeJiJDataTask.class, task -> {
+					task.from(includeConfig);
+					task.getOutputFile().set(
+							this.project.getLayout().getBuildDirectory()
+									.getAsFile()
+									.map(File::toPath)
+									.map(path -> path.resolve("generated/jarjar/metadata.json"))
+									.map(Path::toFile)
+									.get()
+					);
+				});
+
+		this.project.getTasks().named("processResources", ProcessResources.class).configure(task -> {
+			task.dependsOn(generateJarJarMetadata);
+			task.from(generateJarJarMetadata, copySpec -> {
+				copySpec.into("META-INF/jarjar/");
+			});
+		});
 	}
 
 	@Override

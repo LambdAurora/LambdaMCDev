@@ -8,10 +8,8 @@
 
 package dev.lambdaurora.mcdev.task
 
-import com.google.gson.FormattingStyle
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import dev.lambdaurora.mcdev.api.manifest.Fmj
+import dev.lambdaurora.mcdev.util.JsonUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
@@ -43,15 +41,10 @@ public abstract class GenerateFmjTask @Inject constructor() : DefaultTask() {
 			Files.delete(output)
 		}
 
-		Files.writeString(output, GSON.toJson(this.fmj.get()))
+		Files.writeString(output, JsonUtils.GSON.toJson(this.fmj.get()))
 	}
 
 	public companion object {
-		private val GSON: Gson = GsonBuilder()
-			.registerTypeAdapter(Fmj::class.java, Fmj.Serializer())
-			.setFormattingStyle(FormattingStyle.PRETTY.withIndent("\t"))
-			.create()
-
 		public const val TASK_NAME: String = "generateFmj"
 	}
 }

@@ -11,3 +11,7 @@
 - Added tasks to generate `fabric.mod.json` and `neoforge.mods.toml` files.
 - Added experimental access widener to access transformer converter.
 - Tweaked how loom is required to be compatible with loom forks.
+
+## 1.2.0
+
+- Added NeoForge's JarJar metadata generation.

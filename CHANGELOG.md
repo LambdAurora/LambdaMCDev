@@ -15,3 +15,7 @@
 ## 1.2.0
 
 - Added NeoForge's JarJar metadata generation.
+
+### 1.2.1
+
+- Fixed `fabric.mod.json` generator dependency constraints being too strict.

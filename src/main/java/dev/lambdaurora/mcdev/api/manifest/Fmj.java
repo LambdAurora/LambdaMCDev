@@ -23,9 +23,9 @@ public final class Fmj extends ModBase<Fmj> {
 	private final Map<String, List<String>> entrypoints = new LinkedHashMap<>();
 	private String accessWidener;
 	private final List<String> mixins = new ArrayList<>();
-	private final Map<String, String> depends = new LinkedHashMap<>();
-	private final Map<String, String> recommends = new LinkedHashMap<>();
-	private final Map<String, String> breaks = new LinkedHashMap<>();
+	private final Map<String, List<String>> depends = new LinkedHashMap<>();
+	private final Map<String, List<String>> recommends = new LinkedHashMap<>();
+	private final Map<String, List<String>> breaks = new LinkedHashMap<>();
 	private final Map<String, Object> custom = new LinkedHashMap<>();
 
 	public Fmj(String namespace, String name, String version) {
@@ -52,18 +52,33 @@ public final class Fmj extends ModBase<Fmj> {
 		return this;
 	}
 
+	public Fmj withDepend(String dependency, String... constraints) {
+		this.depends.put(dependency, List.of(constraints));
+		return this;
+	}
+
 	public Fmj withDepend(String dependency, String constraint) {
-		this.depends.put(dependency, constraint);
+		this.depends.put(dependency, List.of(constraint));
+		return this;
+	}
+
+	public Fmj withRecommend(String dependency, String... constraints) {
+		this.recommends.put(dependency, List.of(constraints));
 		return this;
 	}
 
 	public Fmj withRecommend(String dependency, String constraint) {
-		this.recommends.put(dependency, constraint);
+		this.recommends.put(dependency, List.of(constraint));
+		return this;
+	}
+
+	public Fmj withBreak(String dependency, String... constraints) {
+		this.breaks.put(dependency, List.of(constraints));
 		return this;
 	}
 
 	public Fmj withBreak(String dependency, String constraint) {
-		this.breaks.put(dependency, constraint);
+		this.breaks.put(dependency, List.of(constraint));
 		return this;
 	}
 
@@ -166,10 +181,22 @@ public final class Fmj extends ModBase<Fmj> {
 			if (!src.entrypoints.isEmpty()) json.add("entrypoints", context.serialize(src.entrypoints));
 			if (src.accessWidener != null) json.addProperty("accessWidener", src.accessWidener);
 			if (!src.mixins.isEmpty()) json.add("mixins", context.serialize(src.mixins));
-			if (!src.depends.isEmpty()) json.add("depends", context.serialize(src.depends));
-			if (!src.recommends.isEmpty()) json.add("recommends", context.serialize(src.recommends));
-			if (!src.breaks.isEmpty()) json.add("breaks", context.serialize(src.breaks));
+			if (!src.depends.isEmpty()) json.add("depends", this.serializeDependencyMap(src.depends, context));
+			if (!src.recommends.isEmpty()) json.add("recommends", this.serializeDependencyMap(src.recommends, context));
+			if (!src.breaks.isEmpty()) json.add("breaks", this.serializeDependencyMap(src.breaks, context));
 			if (!src.custom.isEmpty()) json.add("custom", context.serialize(src.custom));
+			return json;
+		}
+
+		private JsonObject serializeDependencyMap(Map<String, List<String>> dependencies, JsonSerializationContext context) {
+			var json = new JsonObject();
+			dependencies.forEach((dependency, constraints) -> {
+				if (constraints.size() == 1) {
+					json.addProperty(dependency, constraints.getFirst());
+				} else {
+					json.add(dependency, context.serialize(constraints));
+				}
+			});
 			return json;
 		}
 	}

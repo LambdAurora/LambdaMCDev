@@ -8,12 +8,12 @@
 
 package dev.lambdaurora.mcdev.api.manifest;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public final class Nmt extends ModBase<Nmt> {
 	private String loaderVersion;
 	private boolean blurIcon = true;
+	private final List<String> mixins = new ArrayList<>();
 	private final Map<String, String> depends = new LinkedHashMap<>();
 	private final Map<String, Object> custom = new LinkedHashMap<>();
 
@@ -28,6 +28,11 @@ public final class Nmt extends ModBase<Nmt> {
 
 	public Nmt withLoaderVersion(String loaderVersion) {
 		this.loaderVersion = loaderVersion;
+		return this;
+	}
+
+	public Nmt withMixins(String... mixins) {
+		this.mixins.addAll(Arrays.asList(mixins));
 		return this;
 	}
 
@@ -77,6 +82,12 @@ public final class Nmt extends ModBase<Nmt> {
 
 			builder.endSection();
 		}
+
+		this.mixins.forEach((path) -> {
+			builder.startArray("mixins");
+			builder.property("config", path);
+			builder.endSection();
+		});
 
 		this.depends.forEach((id, constraint) -> {
 			builder.startArray("dependencies." + this.namespace);

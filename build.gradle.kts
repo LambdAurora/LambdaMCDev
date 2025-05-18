@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "dev.lambdaurora"
-version = "1.1.0"
+version = "1.1.1"
 val javaVersion = 21
 
 gradlePlugin {

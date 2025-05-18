@@ -19,3 +19,7 @@
 ### 1.2.1
 
 - Fixed `fabric.mod.json` generator dependency constraints being too strict.
+
+### 1.2.2
+
+- Added way to specify mixins in `neoforge.mods.toml` file generation.

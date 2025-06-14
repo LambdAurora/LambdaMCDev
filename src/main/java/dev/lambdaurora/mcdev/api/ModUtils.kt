@@ -22,7 +22,7 @@ public object ModUtils {
 			"beta"
 		} else if (!McVersionLookup.isAlmostRelease(mcVersion)) {
 			"alpha"
-		} else if ("-beta." in version) {
+		} else if ("-beta." in version || "-rc." in version) {
 			"beta"
 		} else {
 			"release"
@@ -66,7 +66,10 @@ public object ModUtils {
 
 	@JvmStatic
 	public fun fetchChangelog(version: String, changelogs: String): String? {
-		val regexVersion = version.replace("\\.".toRegex(), "\\.").replace("\\+".toRegex(), "\\+")
+		val regexVersion = version
+			.replace("\\.".toRegex(), "\\.")
+			.replace("\\+".toRegex(), "\\+")
+			.replace("-rc\\.(\\d+)".toRegex(), "(-rc\\.$1)?")
 		val changelogRegex = "###? ${regexVersion}\\n\\n(( *- .+\\n)+)".toRegex()
 		val matcher = changelogRegex.find(changelogs)
 

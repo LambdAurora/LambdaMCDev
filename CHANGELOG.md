@@ -23,3 +23,8 @@
 ### 1.2.2
 
 - Added way to specify mixins in `neoforge.mods.toml` file generation.
+
+### 1.2.3
+
+- Release candidates are now qualified as "beta" release type in `ModUtils`.
+- Make release-candidate-specific entry optional in changelogs.

@@ -2,7 +2,7 @@
 jetbrains-annotations = "26.0.2"
 gson = "2.11.0"
 # Minecraft-specific
-gradle-loom = "1.10.+"
+gradle-loom = "1.11.4"
 mappingio = "0.7.1"
 accesswidener = "2.1.0"
 # Gradle-specific

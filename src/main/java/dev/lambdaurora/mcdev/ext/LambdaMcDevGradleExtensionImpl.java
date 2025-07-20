@@ -18,8 +18,6 @@ import dev.lambdaurora.mcdev.task.GenerateFmjTask;
 import dev.lambdaurora.mcdev.task.GenerateNeoForgeJiJDataTask;
 import dev.lambdaurora.mcdev.task.GenerateNmtTask;
 import net.fabricmc.loom.api.LoomGradleExtensionAPI;
-import net.fabricmc.loom.build.nesting.NestableJarGenerationTask;
-import net.fabricmc.loom.util.Constants;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Dependency;

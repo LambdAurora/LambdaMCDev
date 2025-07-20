@@ -8,8 +8,16 @@ plugins {
 }
 
 group = "dev.lambdaurora"
-version = "1.2.3"
+version = "1.2.4"
 val javaVersion = 21
+
+repositories {
+	mavenCentral()
+	maven {
+		name = "Fabric"
+		url = uri("https://maven.fabricmc.net/")
+	}
+}
 
 gradlePlugin {
 	website = "https://github.com/LambdAurora/LambdaMCDev"
@@ -21,14 +29,6 @@ gradlePlugin {
 			displayName = "Lambda MC Dev"
 			implementationClass = "dev.lambdaurora.mcdev.LambdaMcDevGradlePlugin"
 		}
-	}
-}
-
-repositories {
-	mavenCentral()
-	maven {
-		name = "Fabric"
-		url = uri("https://maven.fabricmc.net/")
 	}
 }
 

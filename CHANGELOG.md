@@ -28,3 +28,7 @@
 
 - Release candidates are now qualified as "beta" release type in `ModUtils`.
 - Make release-candidate-specific entry optional in changelogs.
+
+### 1.2.4
+
+- Updated to Fabric Loom 1.11.4.

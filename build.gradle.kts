@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "dev.lambdaurora"
-version = "1.2.4"
+version = "1.3.0"
 val javaVersion = 21
 
 repositories {
@@ -34,6 +34,7 @@ gradlePlugin {
 
 dependencies {
 	api(libs.jetbrains.annotations)
+	api(libs.yumi.commons.core)
 	api(libs.accesswidener)
 	implementation(libs.gradle.loom)
 	implementation(libs.mappingio)

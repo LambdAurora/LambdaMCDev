@@ -10,6 +10,7 @@ package dev.lambdaurora.mcdev.ext;
 
 import dev.lambdaurora.mcdev.api.LambdaMcDevGradleExtension;
 import dev.lambdaurora.mcdev.api.ModManifests;
+import dev.lambdaurora.mcdev.api.MojmapRemapping;
 import dev.lambdaurora.mcdev.api.manifest.Fmj;
 import dev.lambdaurora.mcdev.api.manifest.Nmt;
 import dev.lambdaurora.mcdev.api.mappings.LambdaLayeredMappingsSpecBuilder;
@@ -17,9 +18,11 @@ import dev.lambdaurora.mcdev.mappings.LambdaLayeredMappingsSpecBuilderImpl;
 import dev.lambdaurora.mcdev.task.GenerateFmjTask;
 import dev.lambdaurora.mcdev.task.GenerateNeoForgeJiJDataTask;
 import dev.lambdaurora.mcdev.task.GenerateNmtTask;
+import dev.yumi.commons.function.YumiPredicates;
 import net.fabricmc.loom.api.LoomGradleExtensionAPI;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
+import org.gradle.api.artifacts.ConfigurablePublishArtifact;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.provider.Property;
@@ -99,6 +102,36 @@ public class LambdaMcDevGradleExtensionImpl implements LambdaMcDevGradleExtensio
 				copySpec.into("META-INF/jarjar/");
 			});
 		});
+	}
+
+	@Override
+	public MojmapRemapping setupMojmapRemapping() {
+		var mojmap = this.java.getSourceSets().create("mojmap");
+		var config = this.project.getConfigurations().create("mojangMappings");
+
+		this.project.getDependencies().add("mojangMappings", this.loom.officialMojangMappings());
+
+		this.java.registerFeature("mojmap", feature -> {
+			feature.usingSourceSet(mojmap);
+			feature.withSourcesJar();
+
+			this.project.afterEvaluate(project -> {
+				var configurations = project.getConfigurations();
+				configurations.getByName("mojmapApiElements").extendsFrom(configurations.getByName("apiElements"));
+				configurations.getByName("mojmapRuntimeElements").extendsFrom(configurations.getByName("runtimeElements"));
+			});
+		});
+
+		return new MojmapRemappingImpl(this, mojmap, config);
+	}
+
+	@Override
+	public void replaceArtifactInConfiguration(
+			String configuration, Object artifact,
+			Action<? super ConfigurablePublishArtifact> configureAction
+	) {
+		project.getConfigurations().getByName(configuration).getArtifacts().removeIf(YumiPredicates.alwaysTrue());
+		project.getArtifacts().add(configuration, artifact, configureAction);
 	}
 
 	@Override

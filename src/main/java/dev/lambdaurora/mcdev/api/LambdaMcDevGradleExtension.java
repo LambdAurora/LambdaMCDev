@@ -10,6 +10,7 @@ package dev.lambdaurora.mcdev.api;
 
 import dev.lambdaurora.mcdev.api.mappings.LambdaLayeredMappingsSpecBuilder;
 import org.gradle.api.Action;
+import org.gradle.api.artifacts.ConfigurablePublishArtifact;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.provider.Property;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,14 @@ public interface LambdaMcDevGradleExtension {
 	void manifests(@NotNull Action<ModManifests> action);
 
 	void setupJarJarCompat();
+
+	MojmapRemapping setupMojmapRemapping();
+
+	default void replaceArtifactInConfiguration(String configuration, Object artifact) {
+		this.replaceArtifactInConfiguration(configuration, artifact, ignored -> {});
+	}
+
+	void replaceArtifactInConfiguration(String configuration, Object artifact, Action<? super ConfigurablePublishArtifact> configureAction);
 
 	@NotNull Dependency layered(@NotNull Action<LambdaLayeredMappingsSpecBuilder> action);
 }

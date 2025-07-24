@@ -32,3 +32,7 @@
 ### 1.2.4
 
 - Updated to Fabric Loom 1.11.4.
+
+## 1.3.0
+
+- Added utilities to set up Mojmap remapping and artifact publishing.

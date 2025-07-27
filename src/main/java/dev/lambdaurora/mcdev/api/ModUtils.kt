@@ -77,7 +77,7 @@ public object ModUtils {
 			var changelogContent = matcher.groupValues[1]
 
 			val changelogLines = changelogs.substring(matcher.range.last).split("\n")
-			val linkRefRegex = "^\\[([A-z\\d _\\-/+.#]+)]: .+$".toRegex()
+			val linkRefRegex = "^\\[([A-z\\d _\\-/+.#:]+)]: .+$".toRegex()
 			for (line in changelogLines) {
 				if (line matches linkRefRegex)
 					changelogContent += "\n" + line

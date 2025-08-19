@@ -15,18 +15,23 @@ public object ModUtils {
 	private val README_LINK_REGEX: Pattern = Pattern.compile("!\\[(.+?)]\\((assets/[A-z./_]+)\\)")
 
 	@JvmStatic
-	public fun fetchVersionType(version: String, mcVersion: String): String {
+	public fun getVersionType(version: String, mcVersion: String): VersionType {
 		return if ("-alpha." in version) {
-			"alpha"
+			VersionType.ALPHA
 		} else if ("-pre" in mcVersion) {
-			"beta"
+			VersionType.BETA
 		} else if (!McVersionLookup.isAlmostRelease(mcVersion)) {
-			"alpha"
+			VersionType.ALPHA
 		} else if ("-beta." in version || "-rc." in version) {
-			"beta"
+			VersionType.BETA
 		} else {
-			"release"
+			VersionType.RELEASE
 		}
+	}
+
+	@JvmStatic
+	public fun fetchVersionType(version: String, mcVersion: String): String {
+		return this.getVersionType(version, mcVersion).toString()
 	}
 
 	@JvmStatic

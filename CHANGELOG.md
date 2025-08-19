@@ -40,3 +40,7 @@
 ### 1.3.1
 
 - Fixed `ModUtils.fetchChangelog` link reference regex.
+
+## 1.4.0
+
+- Added tasks to package mods for easy processing by release CIs.

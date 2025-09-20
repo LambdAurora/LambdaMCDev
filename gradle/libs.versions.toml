@@ -1,6 +1,6 @@
 [versions]
 jetbrains-annotations = "26.0.2"
-yumi-commons = "1.0.0-alpha.12"
+yumi-commons = "1.0.0-beta.4"
 gson = "2.11.0"
 # Minecraft-specific
 gradle-loom = "1.11.4"

@@ -11,6 +11,7 @@ package dev.lambdaurora.mcdev.task;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.lambdaurora.mcdev.util.JsonUtils;
+import dev.yumi.commons.function.YumiPredicates;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.artifacts.ArtifactView;
 import org.gradle.api.artifacts.Configuration;
@@ -31,10 +32,11 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public abstract class GenerateNeoForgeJiJDataTask extends DefaultTask {
 	@Input
-	protected abstract MapProperty<String, Metadata> getJarIds();
+	public abstract MapProperty<String, Metadata> getJarIds();
 
 	@OutputFile
 	public abstract RegularFileProperty getOutputFile();
@@ -78,6 +80,10 @@ public abstract class GenerateNeoForgeJiJDataTask extends DefaultTask {
 	}
 
 	public void from(Configuration configuration) {
+		this.from(configuration, YumiPredicates.alwaysTrue());
+	}
+
+	public void from(Configuration configuration, Predicate<Metadata> filter) {
 		this.dependsOn(configuration);
 
 		ArtifactView artifacts = configuration.getIncoming().artifactView(config -> {
@@ -135,7 +141,10 @@ public abstract class GenerateNeoForgeJiJDataTask extends DefaultTask {
 				}
 
 				var metadata = new Metadata(group, name, version, classifier);
-				map.put(artifact.getFile().getName(), metadata);
+
+				if (filter.test(metadata)) {
+					map.put(artifact.getFile().getName(), metadata);
+				}
 			});
 			return map;
 		}));

@@ -8,10 +8,8 @@
 
 package dev.lambdaurora.mcdev.api.manifest;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -27,6 +25,7 @@ public final class Fmj extends ModBase<Fmj> {
 	private final Map<String, List<String>> recommends = new LinkedHashMap<>();
 	private final Map<String, List<String>> breaks = new LinkedHashMap<>();
 	private final Map<String, Object> custom = new LinkedHashMap<>();
+	private final List<String> jars = new ArrayList<>();
 
 	public Fmj(String namespace, String name, String version) {
 		super(namespace, name, version);
@@ -35,6 +34,10 @@ public final class Fmj extends ModBase<Fmj> {
 	public Fmj withEnvironment(String environment) {
 		this.environment = environment;
 		return this;
+	}
+
+	public String getEnvironment() {
+		return this.environment;
 	}
 
 	public Fmj withEntrypoints(String entrypointName, String... entrypoints) {
@@ -87,8 +90,22 @@ public final class Fmj extends ModBase<Fmj> {
 		return this;
 	}
 
+	public Fmj withModMenu(ModMenu modMenu) {
+		this.custom.put("modmenu", modMenu);
+		return this;
+	}
+
 	public Fmj withModMenu(Consumer<ModMenu> action) {
 		action.accept((ModMenu) this.custom.computeIfAbsent("modmenu", k -> new ModMenu()));
+		return this;
+	}
+
+	public ModMenu getModMenu() {
+		return this.custom.get("modmenu") instanceof ModMenu modMenu ? modMenu : null;
+	}
+
+	public Fmj withJar(String jar) {
+		this.jars.add(jar);
 		return this;
 	}
 
@@ -144,6 +161,20 @@ public final class Fmj extends ModBase<Fmj> {
 			return this.withParent(mod);
 		}
 
+		public ModMenu copy() {
+			var copy = new ModMenu();
+			if (this.links != null) {
+				copy.links = new HashMap<>(this.links);
+			}
+			if (this.badges != null) {
+				copy.badges = new ArrayList<>(this.badges);
+			}
+			if (this.parent != null) {
+				copy.parent = this.parent.copy();
+			}
+			return copy;
+		}
+
 		public static final class ParentMod extends ModShell<ParentMod> {
 			private List<String> badges;
 
@@ -159,6 +190,19 @@ public final class Fmj extends ModBase<Fmj> {
 			public ParentMod withBadges(String... badges) {
 				this.useBadges().addAll(Arrays.asList(badges));
 				return this;
+			}
+
+			public void copyTo(@NotNull ParentMod target) {
+				super.copyTo(target);
+				if (this.badges != null) {
+					target.badges = new ArrayList<>(this.badges);
+				}
+			}
+
+			public ParentMod copy() {
+				var copy = new ParentMod(this.namespace, this.name);
+				this.copyTo(copy);
+				return copy;
 			}
 		}
 	}
@@ -185,6 +229,7 @@ public final class Fmj extends ModBase<Fmj> {
 			if (!src.recommends.isEmpty()) json.add("recommends", this.serializeDependencyMap(src.recommends, context));
 			if (!src.breaks.isEmpty()) json.add("breaks", this.serializeDependencyMap(src.breaks, context));
 			if (!src.custom.isEmpty()) json.add("custom", context.serialize(src.custom));
+			if (!src.jars.isEmpty()) json.add("jars", this.serializeJars(src.jars));
 			return json;
 		}
 
@@ -196,6 +241,16 @@ public final class Fmj extends ModBase<Fmj> {
 				} else {
 					json.add(dependency, context.serialize(constraints));
 				}
+			});
+			return json;
+		}
+
+		private JsonArray serializeJars(List<String> jars) {
+			var json = new JsonArray();
+			jars.forEach(jar -> {
+				var jarJson = new JsonObject();
+				jarJson.addProperty("file", jar);
+				json.add(jarJson);
 			});
 			return json;
 		}

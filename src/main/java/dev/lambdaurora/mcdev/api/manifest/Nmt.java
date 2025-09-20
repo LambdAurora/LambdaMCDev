@@ -8,22 +8,33 @@
 
 package dev.lambdaurora.mcdev.api.manifest;
 
+import java.io.Serializable;
 import java.util.*;
 
 public final class Nmt extends ModBase<Nmt> {
 	private String loaderVersion;
 	private boolean blurIcon = true;
+	private final Map<String, List<String>> yumiEntrypoints = new LinkedHashMap<>();
+	private String accessTransformer;
 	private final List<String> mixins = new ArrayList<>();
-	private final Map<String, String> depends = new LinkedHashMap<>();
+	private final Map<String, Dependency> dependencies = new LinkedHashMap<>();
 	private final Map<String, Object> custom = new LinkedHashMap<>();
 
 	public Nmt(String namespace, String name, String version) {
 		super(namespace, name, version);
 	}
 
+	public boolean shouldBlurIcon() {
+		return this.blurIcon;
+	}
+
 	public Nmt withBlurIcon(boolean blurIcon) {
 		this.blurIcon = blurIcon;
 		return this;
+	}
+
+	public String getLoaderVersion() {
+		return this.loaderVersion;
 	}
 
 	public Nmt withLoaderVersion(String loaderVersion) {
@@ -36,8 +47,31 @@ public final class Nmt extends ModBase<Nmt> {
 		return this;
 	}
 
+	public Nmt withYumiEntrypoints(String entrypointName, String... entrypoints) {
+		this.yumiEntrypoints.computeIfAbsent(entrypointName, k -> new ArrayList<>()).addAll(Arrays.asList(entrypoints));
+		return this;
+	}
+
+	public Nmt withAccessTransformer(String accessTransformer) {
+		this.accessTransformer = accessTransformer;
+		return this;
+	}
+
 	public Nmt withDepend(String dependency, String constraint) {
-		this.depends.put(dependency, constraint);
+		return this.withDepend(dependency, constraint, DependencySide.BOTH);
+	}
+
+	public Nmt withDepend(String dependency, String constraint, DependencySide side) {
+		this.dependencies.put(dependency, new Dependency(constraint, DependencyType.REQUIRED, side));
+		return this;
+	}
+
+	public Nmt withBreak(String dependency, String constraint) {
+		return this.withBreak(dependency, constraint, DependencySide.BOTH);
+	}
+
+	public Nmt withBreak(String dependency, String constraint, DependencySide side) {
+		this.dependencies.put(dependency, new Dependency(constraint, DependencyType.INCOMPATIBLE, side));
 		return this;
 	}
 
@@ -83,19 +117,27 @@ public final class Nmt extends ModBase<Nmt> {
 			builder.endSection();
 		}
 
+		if (this.accessTransformer != null) {
+			builder.startArray("accessTransformers");
+			builder.property("file", this.accessTransformer);
+			builder.endSection();
+		}
+
 		this.mixins.forEach((path) -> {
 			builder.startArray("mixins");
 			builder.property("config", path);
 			builder.endSection();
 		});
 
-		this.depends.forEach((id, constraint) -> {
+		this.dependencies.forEach((id, dependency) -> {
 			builder.startArray("dependencies." + this.namespace);
 			builder.property("modId", id);
-			builder.property("type", "required");
-			builder.property("versionRange", constraint);
+			builder.property("type", dependency.type.name().toLowerCase());
+			if (!dependency.constraint.equals("*")) {
+				builder.property("versionRange", dependency.constraint);
+			}
 			builder.property("ordering", "NONE");
-			builder.property("side", "BOTH");
+			builder.property("side", dependency.side.name());
 			builder.endSection();
 		});
 
@@ -111,7 +153,30 @@ public final class Nmt extends ModBase<Nmt> {
 			builder.endSection();
 		}
 
+		this.yumiEntrypoints.forEach((id, entrypoints) -> {
+			entrypoints.forEach(entrypoint -> {
+				builder.startArray("modproperties." + this.namespace + ".\"yumi:entrypoints\".\"" + id + '"');
+				builder.property("value", entrypoint);
+				builder.endSection();
+			});
+		});
+
 		return builder.toString();
+	}
+
+	private record Dependency(String constraint, DependencyType type, DependencySide side)
+			implements Serializable {
+	}
+
+	private enum DependencyType {
+		REQUIRED,
+		INCOMPATIBLE
+	}
+
+	public enum DependencySide {
+		BOTH,
+		CLIENT,
+		SERVER
 	}
 
 	private static class TomlBuilder {

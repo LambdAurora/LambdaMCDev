@@ -44,3 +44,11 @@
 ## 1.4.0
 
 - Added tasks to package mods for easy processing by release CIs.
+
+## 1.5.0
+
+- Added more flexible `from(Configuration)` method to `GenerateNeoForgeJiJDataTask`.
+- Added more control on NMT dependency data.
+- Added Yumi entrypoints shortcuts in NMT.
+- Added a way to specify Jar-in-Jar Jars in FMJs.
+- Fixed contributors field not being properly copied in `ModBase.copyTo`.

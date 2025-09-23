@@ -62,6 +62,10 @@ public class ModShell<SELF extends ModShell<SELF>> implements Serializable {
 	}
 
 	public void copyTo(@NotNull ModShell<?> target) {
+		this.copyShellTo(target);
+	}
+
+	public void copyShellTo(@NotNull ModShell<?> target) {
 		target.namespace = this.namespace;
 		target.name = this.name;
 		target.description = this.description;

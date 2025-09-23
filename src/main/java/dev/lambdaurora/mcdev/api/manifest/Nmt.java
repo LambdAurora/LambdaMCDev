@@ -8,6 +8,8 @@
 
 package dev.lambdaurora.mcdev.api.manifest;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -78,6 +80,23 @@ public final class Nmt extends ModBase<Nmt> {
 	public Nmt withCustom(String key, Object value) {
 		this.custom.put(key, value);
 		return this;
+	}
+
+	public void copyTo(@NotNull Nmt target) {
+		this.copyBaseTo(target);
+		target.loaderVersion = this.loaderVersion;
+		target.blurIcon = this.blurIcon;
+		target.yumiEntrypoints.clear();
+		this.yumiEntrypoints.forEach((k, v) -> {
+			target.yumiEntrypoints.put(k, new ArrayList<>(v));
+		});
+		target.accessTransformer = this.accessTransformer;
+		target.mixins.clear();
+		target.mixins.addAll(this.mixins);
+		target.dependencies.clear();
+		target.dependencies.putAll(this.dependencies);
+		target.custom.clear();
+		target.custom.putAll(this.custom);
 	}
 
 	public String toToml() {

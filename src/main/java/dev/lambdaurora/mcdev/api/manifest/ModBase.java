@@ -72,7 +72,11 @@ public class ModBase<SELF extends ModBase<SELF>> extends ModShell<SELF> {
 	}
 
 	public void copyTo(@NotNull ModBase<?> target) {
-		this.copyTo((ModShell<?>) target);
+		this.copyBaseTo(target);
+	}
+
+	public void copyBaseTo(@NotNull ModBase<?> target) {
+		this.copyShellTo(target);
 		target.authors.addAll(this.authors);
 		target.contributors.addAll(this.contributors);
 		target.contact = this.contact != null ? this.contact.copy() : null;

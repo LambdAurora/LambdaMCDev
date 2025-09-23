@@ -52,3 +52,7 @@
 - Added Yumi entrypoints shortcuts in NMT.
 - Added a way to specify Jar-in-Jar Jars in FMJs.
 - Fixed contributors field not being properly copied in `ModBase.copyTo`.
+
+### 1.5.1
+
+- Improved mod manifests copying.

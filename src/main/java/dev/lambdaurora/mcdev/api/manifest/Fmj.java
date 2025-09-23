@@ -109,6 +109,34 @@ public final class Fmj extends ModBase<Fmj> {
 		return this;
 	}
 
+	public void copyTo(@NotNull Fmj target) {
+		this.copyBaseTo(target);
+		target.environment = this.environment;
+		target.entrypoints.clear();
+		this.entrypoints.forEach((k, v) -> {
+			target.entrypoints.put(k, new ArrayList<>(v));
+		});
+		target.accessWidener = this.accessWidener;
+		target.mixins.clear();
+		target.mixins.addAll(this.mixins);
+		target.depends.clear();
+		this.depends.forEach((k, v) -> {
+			target.depends.put(k, new ArrayList<>(v));
+		});
+		target.recommends.clear();
+		this.recommends.forEach((k, v) -> {
+			target.recommends.put(k, new ArrayList<>(v));
+		});
+		target.breaks.clear();
+		this.breaks.forEach((k, v) -> {
+			target.breaks.put(k, new ArrayList<>(v));
+		});
+		target.custom.clear();
+		target.custom.putAll(this.custom);
+		target.jars.clear();
+		target.jars.addAll(this.jars);
+	}
+
 	public static final class ModMenu implements Serializable {
 		private Map<String, String> links;
 		private List<String> badges;

@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "dev.lambdaurora"
-version = "1.5.2"
+version = "1.5.3"
 val javaVersion = 21
 
 repositories {

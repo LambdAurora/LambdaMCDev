@@ -60,3 +60,7 @@
 ### 1.5.2
 
 - Fixed configuration cache compatibility of NMTs.
+
+### 1.5.3
+
+- Fixed authors and contributors getting duplicated when copying mod manifests.

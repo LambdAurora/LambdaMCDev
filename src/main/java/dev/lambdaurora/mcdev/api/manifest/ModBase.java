@@ -77,7 +77,9 @@ public class ModBase<SELF extends ModBase<SELF>> extends ModShell<SELF> {
 
 	public void copyBaseTo(@NotNull ModBase<?> target) {
 		this.copyShellTo(target);
+		target.authors.clear();
 		target.authors.addAll(this.authors);
+		target.contributors.clear();
 		target.contributors.addAll(this.contributors);
 		target.contact = this.contact != null ? this.contact.copy() : null;
 		target.license = this.license;

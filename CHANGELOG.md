@@ -56,3 +56,7 @@
 ### 1.5.1
 
 - Improved mod manifests copying.
+
+### 1.5.2
+
+- Fixed configuration cache compatibility of NMTs.

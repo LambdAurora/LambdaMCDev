@@ -183,11 +183,11 @@ public final class Nmt extends ModBase<Nmt> {
 		return builder.toString();
 	}
 
-	private record Dependency(String constraint, DependencyType type, DependencySide side)
+	public record Dependency(String constraint, DependencyType type, DependencySide side)
 			implements Serializable {
 	}
 
-	private enum DependencyType {
+	public enum DependencyType {
 		REQUIRED,
 		INCOMPATIBLE
 	}

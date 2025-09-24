@@ -64,3 +64,10 @@
 ### 1.5.3
 
 - Fixed authors and contributors getting duplicated when copying mod manifests.
+
+## 1.6.0
+
+- Reworked how mojmap remapping and publication works.
+  - Mojmap-based publications now use a variant attribute instead of capabilities.
+  - Added a mojmap-specific include configuration.
+  - Added some utilities methods to easily create mojmap remap tasks.

@@ -9,6 +9,7 @@
 package dev.lambdaurora.mcdev;
 
 import dev.lambdaurora.mcdev.api.LambdaMcDevGradleExtension;
+import dev.lambdaurora.mcdev.api.MappingVariant;
 import dev.lambdaurora.mcdev.ext.LambdaMcDevGradleExtensionImpl;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -19,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 public class LambdaMcDevGradlePlugin implements Plugin<Project> {
 	@Override
 	public void apply(@NotNull Project project) {
+		project.getDependencies().getAttributesSchema().attribute(MappingVariant.ATTRIBUTE);
+
 		var javaExt = project.getExtensions().getByType(JavaPluginExtension.class);
 		var loomExt = project.getExtensions().findByName("loom");
 		project.getExtensions().create(

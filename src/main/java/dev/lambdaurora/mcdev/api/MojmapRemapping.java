@@ -8,13 +8,60 @@
 
 package dev.lambdaurora.mcdev.api;
 
+import net.fabricmc.loom.task.RemapJarTask;
+import net.fabricmc.loom.task.RemapSourcesJarTask;
+import org.gradle.api.Action;
 import org.gradle.api.artifacts.Configuration;
+import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.SourceSet;
+import org.gradle.api.tasks.bundling.AbstractArchiveTask;
+import org.gradle.jvm.tasks.Jar;
+import org.jetbrains.annotations.NotNull;
 
 public interface MojmapRemapping {
-	SourceSet sourceSet();
+	@NotNull SourceSet sourceSet();
 
-	Configuration mappingsConfiguration();
+	@NotNull Configuration mappingsConfiguration();
+
+	@NotNull Provider<RemapJarTask> registerRemap(String taskName, Action<RemapJarTask> action);
+
+	default @NotNull Provider<RemapJarTask> registerRemap(Jar artifact, Action<RemapJarTask> action) {
+		return this.registerRemap("remapJarToMojmap", task -> {
+			task.dependsOn(artifact);
+			task.getInputFile().set(artifact.getArchiveFile());
+
+			action.execute(task);
+		});
+	}
+
+	default @NotNull Provider<RemapJarTask> registerRemap(Provider<? extends Jar> artifact, Action<RemapJarTask> action) {
+		return this.registerRemap("remapJarToMojmap", task -> {
+			task.dependsOn(artifact);
+			task.getInputFile().set(artifact.flatMap(AbstractArchiveTask::getArchiveFile));
+
+			action.execute(task);
+		});
+	}
+
+	@NotNull Provider<RemapSourcesJarTask> registerSourcesRemap(String taskName, Action<RemapSourcesJarTask> action);
+
+	default @NotNull Provider<RemapSourcesJarTask> registerSourcesRemap(Jar artifact, Action<RemapSourcesJarTask> action) {
+		return this.registerSourcesRemap("remapSourcesJarToMojmap", task -> {
+			task.dependsOn(artifact);
+			task.getInputFile().set(artifact.getArchiveFile());
+
+			action.execute(task);
+		});
+	}
+
+	default @NotNull Provider<RemapSourcesJarTask> registerSourcesRemap(Provider<? extends Jar> artifact, Action<RemapSourcesJarTask> action) {
+		return this.registerSourcesRemap("remapSourcesJarToMojmap", task -> {
+			task.dependsOn(artifact);
+			task.getInputFile().set(artifact.flatMap(AbstractArchiveTask::getArchiveFile));
+
+			action.execute(task);
+		});
+	}
 
 	void setJarArtifact(Object artifact);
 

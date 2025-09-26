@@ -7,8 +7,6 @@ plugins {
 	`maven-publish`
 }
 
-group = "dev.lambdaurora"
-version = "1.6.0"
 val javaVersion = 21
 
 repositories {

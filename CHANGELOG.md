@@ -71,3 +71,7 @@
   - Mojmap-based publications now use a variant attribute instead of capabilities.
   - Added a mojmap-specific include configuration.
   - Added some utilities methods to easily create mojmap remap tasks.
+
+### 1.6.1
+
+- Updated `McVersionLookup::getRelease` to handle 1.21.9 snapshots.

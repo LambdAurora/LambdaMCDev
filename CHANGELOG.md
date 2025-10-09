@@ -75,3 +75,7 @@
 ### 1.6.1
 
 - Updated `McVersionLookup::getRelease` to handle 1.21.9 snapshots.
+
+### 1.6.2
+
+- Updated `McVersionLookup::getRelease` to handle 1.21.11 snapshots.

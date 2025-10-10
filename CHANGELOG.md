@@ -80,6 +80,10 @@
 
 - Updated `McVersionLookup::getRelease` to handle 1.21.11 snapshots.
 
-### 1.7.0
+## 1.7.0
 
 - Added ZIP utilities to make ZIP reproducible.
+
+### 1.7.1
+
+- Improved `McVersionLookup::getCurseForgeEquivalent` to handle the new lowercasing of snapshots.

@@ -140,6 +140,43 @@ public final class McVersionLookup {
 		String cycle = getRelease(version);
 
 		if (version.equals(cycle)) return version;
+		else if (compareMcVersions(cycle, "1.21.6") >= 0) return cycle + "-snapshot";
 		else return cycle + "-Snapshot";
+	}
+
+	private static int compareMcVersions(String a, String b) {
+		int aFirstDotIndex = a.indexOf('.');
+		int bFirstDotIndex = b.indexOf('.');
+		int aSecondDotIndex = a.lastIndexOf('.');
+		int bSecondDotIndex = b.lastIndexOf('.');
+
+		if (aFirstDotIndex == aSecondDotIndex) aSecondDotIndex = a.length();
+		if (bFirstDotIndex == bSecondDotIndex) bSecondDotIndex = b.length();
+
+		// Compare major.
+		int major = Integer.compare(
+				Integer.parseInt(a.substring(0, aFirstDotIndex)),
+				Integer.parseInt(b.substring(0, bFirstDotIndex))
+		);
+
+		if (major != 0) return major;
+
+		// Compare minor.
+		int minor = Integer.compare(
+				Integer.parseInt(a.substring(aFirstDotIndex + 1, aSecondDotIndex)),
+				Integer.parseInt(b.substring(bFirstDotIndex + 1, bSecondDotIndex))
+		);
+
+		if (minor != 0) return minor;
+
+		// Compare patch.
+		if (aSecondDotIndex == a.length() && bSecondDotIndex == b.length()) return 0;
+		if (aSecondDotIndex == a.length()) return -1;
+		if (bSecondDotIndex == b.length()) return 1;
+
+		return Integer.compare(
+				Integer.parseInt(a.substring(aSecondDotIndex + 1)),
+				Integer.parseInt(b.substring(bSecondDotIndex + 1))
+		);
 	}
 }

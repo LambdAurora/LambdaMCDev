@@ -46,6 +46,8 @@ class McVersionLookupTest {
 
 	@Test
 	fun `CurseForge equivalence`() {
+		Assertions.assertEquals("1.21.10-snapshot", McVersionLookup.getCurseForgeEquivalent("1.21.10-rc1"))
+		Assertions.assertEquals("1.21.6-snapshot", McVersionLookup.getCurseForgeEquivalent("1.21.6-rc1"))
 		Assertions.assertEquals("1.21.5-Snapshot", McVersionLookup.getCurseForgeEquivalent("1.21.5-rc1"))
 		Assertions.assertEquals("1.21.5-Snapshot", McVersionLookup.getCurseForgeEquivalent("1.21.5-pre1"))
 		Assertions.assertEquals("1.21.5-Snapshot", McVersionLookup.getCurseForgeEquivalent("25w07a"))

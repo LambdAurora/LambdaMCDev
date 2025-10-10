@@ -11,6 +11,7 @@ package dev.lambdaurora.mcdev;
 import dev.lambdaurora.mcdev.api.LambdaMcDevGradleExtension;
 import dev.lambdaurora.mcdev.api.MappingVariant;
 import dev.lambdaurora.mcdev.ext.LambdaMcDevGradleExtensionImpl;
+import dev.lambdaurora.mcdev.util.ZipFix;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaPluginExtension;

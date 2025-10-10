@@ -79,3 +79,7 @@
 ### 1.6.2
 
 - Updated `McVersionLookup::getRelease` to handle 1.21.11 snapshots.
+
+### 1.7.0
+
+- Added ZIP utilities to make ZIP reproducible.

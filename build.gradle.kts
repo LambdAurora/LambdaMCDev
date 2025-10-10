@@ -37,6 +37,7 @@ dependencies {
 	implementation(libs.gradle.loom)
 	implementation(libs.mappingio)
 	implementation(libs.gson)
+	implementation(libs.apache.commons.compress)
 	// Use JUnit Jupiter for testing.
 	testImplementation(platform(libs.junit.bom))
 	testImplementation(libs.junit.jupiter)

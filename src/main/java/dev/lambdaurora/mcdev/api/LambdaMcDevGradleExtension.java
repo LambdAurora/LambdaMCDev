@@ -12,7 +12,6 @@ import dev.lambdaurora.mcdev.api.mappings.LambdaLayeredMappingsSpecBuilder;
 import org.gradle.api.Action;
 import org.gradle.api.artifacts.ConfigurablePublishArtifact;
 import org.gradle.api.artifacts.Dependency;
-import org.gradle.api.plugins.FeatureSpec;
 import org.gradle.api.provider.Property;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,4 +45,6 @@ public interface LambdaMcDevGradleExtension {
 	void replaceArtifactInConfiguration(String configuration, Object artifact, Action<? super ConfigurablePublishArtifact> configureAction);
 
 	@NotNull Dependency layered(@NotNull Action<LambdaLayeredMappingsSpecBuilder> action);
+
+	void setupActionsRefCheck();
 }

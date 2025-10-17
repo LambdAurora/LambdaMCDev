@@ -87,3 +87,7 @@
 ### 1.7.1
 
 - Improved `McVersionLookup::getCurseForgeEquivalent` to handle the new lowercasing of snapshots.
+
+## 1.8.0
+
+- Added a task to check the Git tag when triggered from a GitHub Action.

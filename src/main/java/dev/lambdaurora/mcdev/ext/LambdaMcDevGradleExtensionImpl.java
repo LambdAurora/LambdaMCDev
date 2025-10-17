@@ -16,6 +16,7 @@ import dev.lambdaurora.mcdev.api.manifest.Fmj;
 import dev.lambdaurora.mcdev.api.manifest.Nmt;
 import dev.lambdaurora.mcdev.api.mappings.LambdaLayeredMappingsSpecBuilder;
 import dev.lambdaurora.mcdev.mappings.LambdaLayeredMappingsSpecBuilderImpl;
+import dev.lambdaurora.mcdev.task.CheckActionsRefTask;
 import dev.lambdaurora.mcdev.task.GenerateFmjTask;
 import dev.lambdaurora.mcdev.task.GenerateNeoForgeJiJDataTask;
 import dev.lambdaurora.mcdev.task.GenerateNmtTask;
@@ -258,6 +259,16 @@ public class LambdaMcDevGradleExtensionImpl implements LambdaMcDevGradleExtensio
 		return this.loom.layered(builder -> {
 			var lambdaBuilder = new LambdaLayeredMappingsSpecBuilderImpl(builder);
 			action.execute(lambdaBuilder);
+		});
+	}
+
+	@Override
+	public void setupActionsRefCheck() {
+		if (this.project.getRootProject() != this.project) return; // Do nothing if not the root project.
+
+		final var checkActionsTask = this.project.getTasks().register("checkActions", CheckActionsRefTask.class);
+		this.project.getTasks().named("check").configure(checkTask -> {
+			checkTask.dependsOn(checkActionsTask);
 		});
 	}
 

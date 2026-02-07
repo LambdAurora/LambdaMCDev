@@ -10,10 +10,12 @@ package dev.lambdaurora.mcdev.api;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 // Based off Fabric Loader's https://github.com/FabricMC/fabric-loader/blob/fda9a7b84f0898f57b46fbbfda58795e7fa31cef/minecraft/src/main/java/net/fabricmc/loader/impl/game/minecraft/McVersionLookup.java
 public final class McVersionLookup {
+	private static final Pattern DATE_BASED_PATTERN = Pattern.compile("(\\d{2}\\.\\d+(?:\\.\\d+)?)(?:-(snapshot|pre|rc)-(\\d+))?");
 	private static final Pattern RELEASE_PATTERN = Pattern.compile("\\d+\\.\\d+(?:\\.\\d+)?");
 	private static final Pattern SNAPSHOT_PATTERN = Pattern.compile("(?:Snapshot )?(\\d+)w0?(0|[1-9]\\d*)([a-z])");
 
@@ -48,6 +50,13 @@ public final class McVersionLookup {
 	 * @return the release cycle associated
 	 */
 	public static @NotNull String getRelease(@NotNull String version) {
+		// 26.1, 26.1.1, 26.1-snapshot-1, 26.1-pre-1, 26.1-rc-1
+		var matcher = DATE_BASED_PATTERN.matcher(version);
+
+		if (matcher.matches()) {
+			return matcher.group(1);
+		}
+
 		if (isRelease(version)) return version;
 
 		int index = version.indexOf("-pre");
@@ -56,7 +65,7 @@ public final class McVersionLookup {
 		index = version.indexOf("-rc");
 		if (index >= 0) return version.substring(0, index);
 
-		var matcher = SNAPSHOT_PATTERN.matcher(version);
+		matcher = SNAPSHOT_PATTERN.matcher(version);
 
 		if (matcher.matches()) {
 			int year = Integer.parseInt(matcher.group(1));
@@ -113,13 +122,30 @@ public final class McVersionLookup {
 		String releaseCycle = getRelease(version);
 		if (version.equals(releaseCycle)) return version;
 
+		Matcher matcher;
+		if ((matcher = DATE_BASED_PATTERN.matcher(version)).matches()) { // 26.1, 26.1.1, 26.1-snapshot-1, 26.1-pre-1, 26.1-rc-1
+			if (matcher.group(2) != null) {
+				var ret = new StringBuilder(releaseCycle + "-");
+				if (matcher.group(2).equals("snapshot")) {
+					ret.append("alpha");
+				} else {
+					ret.append(matcher.group(2));
+				}
+
+				ret.append('.');
+				ret.append(matcher.group(3));
+
+				return ret.toString();
+			}
+		}
+
 		int index = version.indexOf("-rc");
 		if (index >= 0) return releaseCycle + "-rc." + version.substring(index + 3);
 
 		index = version.indexOf("-pre");
 		if (index >= 0) return releaseCycle + "-beta." + version.substring(index + 4);
 
-		var matcher = SNAPSHOT_PATTERN.matcher(version);
+		matcher = SNAPSHOT_PATTERN.matcher(version);
 
 		if (matcher.matches()) {
 			return releaseCycle + "-alpha.%s.%s.%s".formatted(matcher.group(1), matcher.group(2), matcher.group(3));

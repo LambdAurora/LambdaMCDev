@@ -91,3 +91,7 @@
 ## 1.8.0
 
 - Added a task to check the Git tag when triggered from a GitHub Action.
+
+## 1.9.0
+
+- Added support for new version format for Minecraft versioning utilities.

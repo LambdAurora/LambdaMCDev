@@ -21,6 +21,7 @@ import org.gradle.api.artifacts.result.ResolvedVariantResult;
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.provider.MapProperty;
+import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+@CacheableTask
 public abstract class GenerateNeoForgeJiJDataTask extends DefaultTask {
 	@Input
 	public abstract MapProperty<String, Metadata> getJarIds();

@@ -13,6 +13,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * Represents a task which checks that the ref name used for the Git tag is accurate to the version that's being published.
@@ -20,6 +21,7 @@ import org.gradle.api.tasks.TaskAction
  * @version 1.8.0
  * @since 1.8.0
  */
+@DisableCachingByDefault
 public abstract class CheckActionsRefTask : DefaultTask() {
 	@get:Input
 	public abstract val version: Property<String>

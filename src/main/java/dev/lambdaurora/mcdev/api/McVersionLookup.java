@@ -19,7 +19,7 @@ public final class McVersionLookup {
 	private static final Pattern RELEASE_PATTERN = Pattern.compile("\\d+\\.\\d+(?:\\.\\d+)?");
 	private static final Pattern SNAPSHOT_PATTERN = Pattern.compile("(?:Snapshot )?(\\d+)w0?(0|[1-9]\\d*)([a-z])");
 
-	private static final Pattern ALMOST_RELEASE_PATTERN = Pattern.compile("\\d+\\.\\d+(?:\\.\\d+)?(?:-rc\\d+)?");
+	private static final Pattern ALMOST_RELEASE_PATTERN = Pattern.compile("\\d+\\.\\d+(?:\\.\\d+)?(?:-rc-?\\d+)?");
 
 	private McVersionLookup() {
 		throw new UnsupportedOperationException("McVersionLookup contains only static definitions.");

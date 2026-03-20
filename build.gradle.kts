@@ -2,12 +2,12 @@ plugins {
 	id("dev.yumi.gradle.licenser") version "2.1.+"
 	`java-gradle-plugin`
 
-	kotlin("jvm") version "2.0.0"
+	kotlin("jvm") version "2.3.20"
 
 	`maven-publish`
 }
 
-val javaVersion = 21
+val javaVersion = 25
 
 repositories {
 	mavenCentral()

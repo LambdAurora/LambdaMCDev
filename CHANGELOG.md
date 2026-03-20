@@ -95,3 +95,8 @@
 ## 1.9.0
 
 - Added support for new version format for Minecraft versioning utilities.
+
+## 2.0.0
+
+- Removed mapping stuff.
+- Fixed `McVersionLookup::isAlmostRelease` pattern matching for new version scheme.

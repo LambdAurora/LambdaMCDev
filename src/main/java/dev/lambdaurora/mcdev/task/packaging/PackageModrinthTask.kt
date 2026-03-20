@@ -14,11 +14,13 @@ import dev.lambdaurora.mcdev.api.ModVersionDependency
 import dev.lambdaurora.mcdev.api.ModUtils
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import java.nio.file.FileSystem
 import java.nio.file.Files
 import javax.inject.Inject
 
+@CacheableTask
 public abstract class PackageModrinthTask @Inject constructor() : AbstractPackageTask() {
 	@get:Input
 	public abstract val versionName: Property<String>

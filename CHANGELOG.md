@@ -95,3 +95,7 @@
 ## 1.9.0
 
 - Added support for new version format for Minecraft versioning utilities.
+
+## 1.10.0
+
+- Added basic language files check task.

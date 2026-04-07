@@ -100,3 +100,7 @@
 
 - Removed mapping stuff.
 - Fixed `McVersionLookup::isAlmostRelease` pattern matching for new version scheme.
+
+## 2.1.0
+
+- Added basic language files check task.

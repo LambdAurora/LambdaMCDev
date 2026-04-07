@@ -33,6 +33,7 @@ import java.util.stream.StreamSupport
  * @version 2.1.0
  * @since 2.1.0
  */
+@CacheableTask
 public abstract class CheckLanguageResourcesTask : DefaultTask() {
 	@get:InputFiles
 	@get:PathSensitive(PathSensitivity.RELATIVE)

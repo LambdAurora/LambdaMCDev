@@ -108,3 +108,7 @@
 ### 2.1.1
 
 - Fixed missing `@CacheableTask` in `CheckLanguageResourcesTask`.
+
+## 2.2.0
+
+- Improved mod manifest task dependency setup with source set.

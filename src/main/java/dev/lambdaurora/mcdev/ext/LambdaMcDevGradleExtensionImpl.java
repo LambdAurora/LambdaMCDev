@@ -273,12 +273,12 @@ public class LambdaMcDevGradleExtensionImpl implements LambdaMcDevGradleExtensio
 	}
 
 	public class Manifests implements ModManifests {
-		private final File generatedDir = project.file("build/generated/generated_resources/");
+		private final File generatedFmjDir = project.file("build/generated/fmj/");
+		private final File generatedNmtDir = project.file("build/generated/nmt/");
 		private final Property<Fmj> fmj
 				= project.getObjects().property(Fmj.class);
 		private final Property<Nmt> nmt
 				= project.getObjects().property(Nmt.class);
-		private boolean isSourceSetSetup = false;
 
 		@Override
 		public @NotNull Provider<Fmj> fmj() {
@@ -322,7 +322,7 @@ public class LambdaMcDevGradleExtensionImpl implements LambdaMcDevGradleExtensio
 					GenerateFmjTask.TASK_NAME, GenerateFmjTask.class,
 					task -> {
 						task.getFmj().set(this.fmj.get());
-						task.getOutputDir().set(this.generatedDir);
+						task.getOutputDir().set(this.generatedFmjDir);
 					}
 			);
 			this.setupTask(generateFmj);
@@ -370,7 +370,7 @@ public class LambdaMcDevGradleExtensionImpl implements LambdaMcDevGradleExtensio
 					GenerateNmtTask.TASK_NAME, GenerateNmtTask.class,
 					task -> {
 						task.getNmt().set(this.nmt.get());
-						task.getOutputDir().set(this.generatedDir);
+						task.getOutputDir().set(this.generatedNmtDir);
 					}
 			);
 			this.setupTask(generateNmt);
@@ -382,30 +382,13 @@ public class LambdaMcDevGradleExtensionImpl implements LambdaMcDevGradleExtensio
 					.named("ideaSyncTask")
 					.configure(syncTask -> syncTask.dependsOn(task));
 
-			var sourcesJar = project.getTasks().findByName("sourcesJar");
-			if (sourcesJar != null) {
-				sourcesJar.dependsOn(task);
-			}
-
-			var processResources = project.getTasks().findByName("processResources");
-			if (processResources != null) {
-				processResources.dependsOn(task);
-			}
-
-			this.setupSourceSet();
+			this.setupSourceSet(task);
 		}
 
-		private void setupSourceSet() {
-			if (this.isSourceSetSetup) {
-				return;
-			}
-
-			this.isSourceSetSetup = true;
+		private void setupSourceSet(TaskProvider<?> task) {
 			var sourceSets = java.getSourceSets();
 			var main = sourceSets.getByName("main");
-			main.resources(files -> {
-				files.srcDir(this.generatedDir);
-			});
+			main.resources(files -> files.srcDir(task));
 		}
 	}
 }

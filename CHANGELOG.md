@@ -99,3 +99,4 @@
 ## 1.10.0
 
 - Added basic language files check task.
+- Improved mod manifest task dependency setup with source set.

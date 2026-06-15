@@ -100,3 +100,7 @@
 
 - Added basic language files check task.
 - Improved mod manifest task dependency setup with source set.
+
+### 1.10.1
+
+- Fixed `processMojmapIncludeJars` task missing a property when using mojmap stuff.

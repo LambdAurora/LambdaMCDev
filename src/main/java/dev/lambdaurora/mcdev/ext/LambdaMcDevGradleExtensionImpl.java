@@ -213,6 +213,7 @@ public class LambdaMcDevGradleExtensionImpl implements LambdaMcDevGradleExtensio
 
 		var processIncludeJars = tasks.register("process" + Utils.capitalize(published.getName()) + "IncludeJars", NestableJarGenerationTask.class, task -> {
 			task.from(includeInternal.get());
+			task.getUncompressNestedJars().set(false);
 			task.getOutputDirectory().set(project.getLayout().getBuildDirectory().dir(task.getName()));
 		});
 

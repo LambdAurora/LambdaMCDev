@@ -4,7 +4,7 @@ yumi-commons = "1.0.0"
 gson = "2.11.0"
 apache-commons-compress = "1.28.0"
 # Minecraft-specific
-gradle-loom = "1.11.4"
+gradle-loom = "1.16.3"
 mappingio = "0.7.1"
 accesswidener = "2.1.0"
 # Gradle-specific

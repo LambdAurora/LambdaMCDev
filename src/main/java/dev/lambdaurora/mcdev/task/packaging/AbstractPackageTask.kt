@@ -16,15 +16,19 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import java.nio.file.Files
 import javax.inject.Inject
 
+@CacheableTask
 public abstract class AbstractPackageTask @Inject constructor() : DefaultTask() {
 	@get:Input
 	public abstract val version: Property<String>
@@ -33,6 +37,7 @@ public abstract class AbstractPackageTask @Inject constructor() : DefaultTask() 
 	public abstract val versionType: Property<VersionType>
 
 	@get:InputFiles
+	@get:PathSensitive(PathSensitivity.RELATIVE)
 	public abstract val files: ConfigurableFileCollection
 
 	@get:OutputFile

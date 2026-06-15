@@ -16,7 +16,7 @@ import java.io.UncheckedIOException
 
 @ApiStatus.Internal
 @Suppress("UnstableApiUsage")
-internal data class MojangMappingsSpec(val nameSyntheticMembers: Boolean) : MappingsSpec<MojangMappingLayer?> {
+internal data class MojangMappingsSpec(val nameSyntheticMembers: Boolean) : MappingsSpec<MojangMappingLayer> {
 	override fun createLayer(context: MappingContext): MojangMappingLayer {
 		val versionInfo = context.minecraftProvider().versionInfo
 		val clientDownload = versionInfo.download(MANIFEST_CLIENT_MAPPINGS)

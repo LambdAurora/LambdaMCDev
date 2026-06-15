@@ -58,7 +58,7 @@ public class LambdaMcDevGradlePlugin implements Plugin<Project> {
 			task.setGroup("verification");
 		});
 
-		project.getPlugins().withType(LifecycleBasePlugin.class).configureEach(_ -> {
+		project.getPlugins().withType(LifecycleBasePlugin.class).configureEach(plugin -> {
 			project.getTasks().named(LifecycleBasePlugin.CHECK_TASK_NAME).configure(task -> {
 				task.dependsOn(globalCheck);
 			});

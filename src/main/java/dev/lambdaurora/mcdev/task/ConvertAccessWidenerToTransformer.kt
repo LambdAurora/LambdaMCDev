@@ -11,8 +11,11 @@ package dev.lambdaurora.mcdev.task
 import dev.lambdaurora.mcdev.api.AccessWidenerToTransformer
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import java.io.IOException
 import java.nio.file.FileSystems
@@ -20,8 +23,10 @@ import java.nio.file.Files
 import java.nio.file.Path
 import javax.inject.Inject
 
+@CacheableTask
 public abstract class ConvertAccessWidenerToTransformer @Inject constructor() : DefaultTask() {
 	@get:InputFile
+	@get:PathSensitive(PathSensitivity.RELATIVE)
 	public abstract val input: RegularFileProperty
 
 	@get:OutputFile

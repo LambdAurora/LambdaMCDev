@@ -109,6 +109,10 @@
 
 - Fixed missing `@CacheableTask` in `CheckLanguageResourcesTask`.
 
-### 2.2.0
+## 2.2.0
+
+- Improved mod manifest task dependency setup with source set.
+
+## 2.3.0
 
 - Added handling of environment for package modrinth task.

@@ -10,8 +10,8 @@ package dev.lambdaurora.mcdev.api;
 
 /// Represents an environment type.
 ///
-/// @version 2.2.0
-/// @since 2.2.0
+/// @version 2.3.0
+/// @since 2.3.0
 public enum EnvironmentType {
 	CLIENT_AND_SERVER,
 	CLIENT_ONLY,

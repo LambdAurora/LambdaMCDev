@@ -10,8 +10,9 @@ package dev.lambdaurora.mcdev.task.packaging
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import dev.lambdaurora.mcdev.api.ModVersionDependency
+import dev.lambdaurora.mcdev.api.EnvironmentType
 import dev.lambdaurora.mcdev.api.ModUtils
+import dev.lambdaurora.mcdev.api.ModVersionDependency
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
@@ -32,6 +33,9 @@ public abstract class PackageModrinthTask @Inject constructor() : AbstractPackag
 	public abstract val loaders: ListProperty<String>
 
 	@get:Input
+	public abstract val environment: Property<EnvironmentType>
+
+	@get:Input
 	public abstract val dependencies: ListProperty<ModVersionDependency>
 
 	@get:Input
@@ -42,6 +46,7 @@ public abstract class PackageModrinthTask @Inject constructor() : AbstractPackag
 
 	init {
 		val version = this.project.version.toString()
+		this.environment.convention(EnvironmentType.CLIENT_AND_SERVER)
 		this.changelog.convention(ModUtils.fetchChangelog(this.project, version))
 		this.zipOut.convention(this.project.layout.buildDirectory.map { it -> it.file("modrinth.zip") })
 	}
@@ -61,6 +66,8 @@ public abstract class PackageModrinthTask @Inject constructor() : AbstractPackag
 		val loaders = JsonArray()
 		this.loaders.get().forEach { loaders.add(it) }
 		json.add("loaders", loaders)
+
+		json.addProperty("environment", this.environment.get().id())
 
 		val dependencies = JsonArray()
 		this.dependencies.get().forEach { dependencies.add(it.toJson()) }

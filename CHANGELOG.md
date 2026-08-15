@@ -108,3 +108,7 @@
 ### 2.1.1
 
 - Fixed missing `@CacheableTask` in `CheckLanguageResourcesTask`.
+
+### 2.2.0
+
+- Added handling of environment for package modrinth task.

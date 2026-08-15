@@ -1,5 +1,5 @@
 plugins {
-	id("dev.yumi.gradle.licenser") version "2.1.+"
+	id("dev.yumi.gradle.licenser") version "4.0.+"
 	`java-gradle-plugin`
 
 	kotlin("jvm") version "2.3.20"
@@ -84,7 +84,7 @@ tasks.jar {
 
 license {
 	rule(file("codeformat/HEADER"))
-	exclude("scenarios/**")
+	include("**/*.java")
 }
 
 tasks.withType<Test>().configureEach {

@@ -121,3 +121,7 @@
 
 - Added more flexibility to mixin entries in FMJ generation.
 - Added ability to transform class tweakers to access transformer.
+
+### 3.0.1
+
+- Fixed `MixinEntry` not being serializable.

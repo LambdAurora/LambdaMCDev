@@ -10,6 +10,7 @@ package dev.lambdaurora.mcdev.api.manifest;
 
 import com.google.gson.*;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 
 /// Represents a mixin entry.
@@ -17,7 +18,7 @@ import java.lang.reflect.Type;
 /// @author LambdAurora
 /// @version 3.0.0
 /// @since 3.0.0
-public record MixinEntry(String config, ModEnvironment environment) {
+public record MixinEntry(String config, ModEnvironment environment) implements Serializable {
 	public MixinEntry(String config) {
 		this(config, ModEnvironment.UNIVERSAL);
 	}

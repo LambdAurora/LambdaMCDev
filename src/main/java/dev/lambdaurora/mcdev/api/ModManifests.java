@@ -12,18 +12,19 @@ import dev.lambdaurora.mcdev.api.manifest.Fmj;
 import dev.lambdaurora.mcdev.api.manifest.Nmt;
 import org.gradle.api.Action;
 import org.gradle.api.provider.Provider;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public interface ModManifests {
-	@NotNull Provider<Fmj> fmj();
+	Provider<Fmj> fmj();
 
-	@NotNull Fmj fmj(@NotNull Fmj fmj);
+	Fmj fmj(Fmj fmj);
 
-	@NotNull Fmj fmj(@NotNull Action<Fmj> action);
+	Fmj fmj(Action<Fmj> action);
 
-	@NotNull Provider<Nmt> nmt();
+	Provider<Nmt> nmt();
 
-	@NotNull Nmt nmt(@NotNull Nmt nmt);
+	Nmt nmt(Nmt nmt);
 
-	@NotNull Nmt nmt(@NotNull Action<Nmt> action);
+	Nmt nmt(Action<Nmt> action);
 }

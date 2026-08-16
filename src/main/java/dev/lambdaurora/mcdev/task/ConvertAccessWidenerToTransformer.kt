@@ -8,7 +8,7 @@
 
 package dev.lambdaurora.mcdev.task
 
-import dev.lambdaurora.mcdev.api.AccessWidenerToTransformer
+import dev.lambdaurora.mcdev.api.ClassTweakerToTransformer
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.CacheableTask
@@ -60,12 +60,12 @@ public abstract class ConvertAccessWidenerToTransformer @Inject constructor() : 
 					throw IllegalStateException("Input JAR has more than one access widener.")
 				}
 
-				AccessWidenerToTransformer.convert(jarCandidates[0], outputPath)
+				ClassTweakerToTransformer.convert(jarCandidates[0], outputPath)
 			}
 
 			return
 		}
 
-		AccessWidenerToTransformer.convert(inputPath, outputPath)
+		ClassTweakerToTransformer.convert(inputPath, outputPath)
 	}
 }

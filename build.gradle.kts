@@ -33,7 +33,7 @@ gradlePlugin {
 dependencies {
 	api(libs.jetbrains.annotations)
 	api(libs.yumi.commons.core)
-	api(libs.accesswidener)
+	api(libs.classtweaker)
 	implementation(libs.gradle.loom)
 	implementation(libs.mappingio)
 	implementation(libs.gson)

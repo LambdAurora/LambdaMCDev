@@ -20,7 +20,7 @@ public final class Fmj extends ModBase<Fmj> {
 	private String environment;
 	private final Map<String, List<String>> entrypoints = new LinkedHashMap<>();
 	private String accessWidener;
-	private final List<String> mixins = new ArrayList<>();
+	private final List<MixinEntry> mixins = new ArrayList<>();
 	private final Map<String, List<String>> depends = new LinkedHashMap<>();
 	private final Map<String, List<String>> recommends = new LinkedHashMap<>();
 	private final Map<String, List<String>> breaks = new LinkedHashMap<>();
@@ -51,6 +51,16 @@ public final class Fmj extends ModBase<Fmj> {
 	}
 
 	public Fmj withMixins(String... mixins) {
+		Arrays.stream(mixins).map(MixinEntry::new).forEach(this.mixins::add);
+		return this;
+	}
+
+	public Fmj withMixin(String config, ModEnvironment environment) {
+		this.mixins.add(new MixinEntry(config, environment));
+		return this;
+	}
+
+	public Fmj withMixins(MixinEntry... mixins) {
 		this.mixins.addAll(Arrays.asList(mixins));
 		return this;
 	}

@@ -12,9 +12,11 @@ import com.google.gson.FormattingStyle;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.lambdaurora.mcdev.api.manifest.Fmj;
+import dev.lambdaurora.mcdev.api.manifest.MixinEntry;
 
 public final class JsonUtils {
 	public static final Gson GSON = new GsonBuilder()
+			.registerTypeAdapter(MixinEntry.class, new MixinEntry.JsonAdapter())
 			.registerTypeAdapter(Fmj.class, new Fmj.Serializer())
 			.setFormattingStyle(FormattingStyle.PRETTY.withIndent("\t"))
 			.create();

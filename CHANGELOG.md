@@ -116,3 +116,8 @@
 ## 2.3.0
 
 - Added handling of environment for package modrinth task.
+
+## 3.0.0
+
+- Added more flexibility to mixin entries in FMJ generation.
+- Added ability to transform class tweakers to access transformer.
